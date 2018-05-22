@@ -110,7 +110,8 @@ void interrupt interruptions() {
 /**
  * Point d'entrée.
  * Configure les interruptions, le module A/D pour AN8, puis
- * va faire dodo.
+ * laisse faire le travail par la routine de traitement des
+ * interruptions
  */
 void main() {
     // Configure le port A et les 6 LSB du port C comme sorties digitales,
@@ -132,7 +133,7 @@ void main() {
     ADCON2bits.ADCS = 0;    // À 1MHz, le TAD dure 2us.
 
     // Configure le temporisateur 0 pour obtenir 150 interruptions par seconde,
-    // en assumant que le microprocesseur est cadencé � 1MHz
+    // en assumant que le microprocesseur est cadencé à 1MHz
     T0CONbits.TMR0ON = 1;  // Active le temporisateur 0.
     T0CONbits.T08BIT = 0;  // 16 bits pour compter jusqu'à 3125.
     T0CONbits.T0CS = 0;    // On utilise Fosc/4 comme source.
@@ -147,6 +148,6 @@ void main() {
     PIE1bits.ADIE = 1;      // Active les interr. A/D
     IPR1bits.ADIP = 1;      // Interr. A/D sont de haute priorité.
 
-    // Dodo (la routine d'interruptions fait tout le travail).
+    // La routine d'interruptions fait tout le travail:
     while(1);
 }
